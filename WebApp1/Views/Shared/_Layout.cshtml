@@ -1,0 +1,17 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <base href="/" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link href="~/dist/styles.css" rel="stylesheet" asp-append-version="true" />
+</head>
+<body>
+    <div>
+        @RenderBody()
+        @RenderSection("Scripts", required: false)
+    </div>
+</body>
+</html>

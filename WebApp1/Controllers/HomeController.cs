@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp1.Controllers
 {
@@ -7,6 +8,12 @@ namespace WebApp1.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [Authorize]
+        public string Restricted()
+        {
+            return "asdfasdfasdf";
         }
     }
 }

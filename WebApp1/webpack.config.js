@@ -4,7 +4,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ProgressPlugin = require('webpack/lib/ProgressPlugin');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const rxPaths = require('rxjs/_esm5/path-mapping');
 const autoprefixer = require('autoprefixer');
 const postcssUrl = require('postcss-url');
@@ -12,14 +11,14 @@ const cssnano = require('cssnano');
 const customProperties = require('postcss-custom-properties');
 
 const { NoEmitOnErrorsPlugin, SourceMapDevToolPlugin, NamedModulesPlugin } = require('webpack');
-const { NamedLazyChunksWebpackPlugin, BaseHrefWebpackPlugin } = require('@angular/cli/plugins/webpack');
-const { CommonsChunkPlugin, UglifyJsPlugin } = require('webpack').optimize;
+const { ScriptsWebpackPlugin, NamedLazyChunksWebpackPlugin, BaseHrefWebpackPlugin } = require('@angular/cli/plugins/webpack');
+const { CommonsChunkPlugin } = require('webpack').optimize;
 const { AngularCompilerPlugin } = require('@ngtools/webpack');
 
 const nodeModules = path.join(process.cwd(), 'node_modules');
 const realNodeModules = fs.realpathSync(nodeModules);
 const genDirNodeModules = path.join(process.cwd(), 'ClientApp', '$$_gendir', 'node_modules');
-const entryPoints = ["inline", "polyfills", "sw-register", "styles", "vendor", "main"];
+const entryPoints = ["inline", "polyfills", "sw-register", "styles", "scripts", "vendor", "main"];
 const minimizeCss = false;
 const baseHref = "";
 const deployUrl = "";
@@ -103,11 +102,14 @@ module.exports = {
             "./ClientApp\\polyfills.ts"
         ],
         "styles": [
+            "./node_modules\\font-awesome\\scss\\font-awesome.scss",
+            "./node_modules\\angular-bootstrap-md\\scss\\bootstrap\\bootstrap.scss",
+            "./node_modules\\angular-bootstrap-md\\scss\\mdb-free.scss",
             "./ClientApp\\styles.scss"
         ]
     },
     "output": {
-        "path": path.join(process.cwd(), "wwwroot/dist"),
+        "path": path.join(process.cwd(), "dist"),
         "filename": "[name].bundle.js",
         "chunkFilename": "[id].chunk.js",
         "crossOriginLoading": false,
@@ -137,6 +139,9 @@ module.exports = {
             },
             {
                 "exclude": [
+                    path.join(process.cwd(), "node_modules\\font-awesome\\scss\\font-awesome.scss"),
+                    path.join(process.cwd(), "node_modules\\angular-bootstrap-md\\scss\\bootstrap\\bootstrap.scss"),
+                    path.join(process.cwd(), "node_modules\\angular-bootstrap-md\\scss\\mdb-free.scss"),
                     path.join(process.cwd(), "ClientApp\\styles.scss")
                 ],
                 "test": /\.css$/,
@@ -161,6 +166,9 @@ module.exports = {
             },
             {
                 "exclude": [
+                    path.join(process.cwd(), "node_modules\\font-awesome\\scss\\font-awesome.scss"),
+                    path.join(process.cwd(), "node_modules\\angular-bootstrap-md\\scss\\bootstrap\\bootstrap.scss"),
+                    path.join(process.cwd(), "node_modules\\angular-bootstrap-md\\scss\\mdb-free.scss"),
                     path.join(process.cwd(), "ClientApp\\styles.scss")
                 ],
                 "test": /\.scss$|\.sass$/,
@@ -193,6 +201,9 @@ module.exports = {
             },
             {
                 "exclude": [
+                    path.join(process.cwd(), "node_modules\\font-awesome\\scss\\font-awesome.scss"),
+                    path.join(process.cwd(), "node_modules\\angular-bootstrap-md\\scss\\bootstrap\\bootstrap.scss"),
+                    path.join(process.cwd(), "node_modules\\angular-bootstrap-md\\scss\\mdb-free.scss"),
                     path.join(process.cwd(), "ClientApp\\styles.scss")
                 ],
                 "test": /\.less$/,
@@ -223,6 +234,9 @@ module.exports = {
             },
             {
                 "exclude": [
+                    path.join(process.cwd(), "node_modules\\font-awesome\\scss\\font-awesome.scss"),
+                    path.join(process.cwd(), "node_modules\\angular-bootstrap-md\\scss\\bootstrap\\bootstrap.scss"),
+                    path.join(process.cwd(), "node_modules\\angular-bootstrap-md\\scss\\mdb-free.scss"),
                     path.join(process.cwd(), "ClientApp\\styles.scss")
                 ],
                 "test": /\.styl$/,
@@ -254,6 +268,9 @@ module.exports = {
             },
             {
                 "include": [
+                    path.join(process.cwd(), "node_modules\\font-awesome\\scss\\font-awesome.scss"),
+                    path.join(process.cwd(), "node_modules\\angular-bootstrap-md\\scss\\bootstrap\\bootstrap.scss"),
+                    path.join(process.cwd(), "node_modules\\angular-bootstrap-md\\scss\\mdb-free.scss"),
                     path.join(process.cwd(), "ClientApp\\styles.scss")
                 ],
                 "test": /\.css$/,
@@ -278,41 +295,44 @@ module.exports = {
             },
             {
                 "include": [
+                    path.join(process.cwd(), "node_modules\\font-awesome\\scss\\font-awesome.scss"),
+                    path.join(process.cwd(), "node_modules\\angular-bootstrap-md\\scss\\bootstrap\\bootstrap.scss"),
+                    path.join(process.cwd(), "node_modules\\angular-bootstrap-md\\scss\\mdb-free.scss"),
                     path.join(process.cwd(), "ClientApp\\styles.scss")
                 ],
                 "test": /\.scss$|\.sass$/,
-                "use":
-                ExtractTextPlugin.extract({
-                    fallback: "style-loader",
-                    use: [
-                        {
-                            "loader": "css-loader",
-                            "options": {
-                                "sourceMap": false,
-                                "importLoaders": 1
-                            }
-                        },
-                        {
-                            "loader": "postcss-loader",
-                            "options": {
-                                "ident": "postcss",
-                                "plugins": postcssPlugins,
-                                "sourceMap": false
-                            }
-                        },
-                        {
-                            "loader": "sass-loader",
-                            "options": {
-                                "sourceMap": false,
-                                "precision": 8,
-                                "includePaths": []
-                            }
+                "use": [
+                    "style-loader",
+                    {
+                        "loader": "css-loader",
+                        "options": {
+                            "sourceMap": false,
+                            "importLoaders": 1
                         }
-                    ]
-                })
+                    },
+                    {
+                        "loader": "postcss-loader",
+                        "options": {
+                            "ident": "postcss",
+                            "plugins": postcssPlugins,
+                            "sourceMap": false
+                        }
+                    },
+                    {
+                        "loader": "sass-loader",
+                        "options": {
+                            "sourceMap": false,
+                            "precision": 8,
+                            "includePaths": []
+                        }
+                    }
+                ]
             },
             {
                 "include": [
+                    path.join(process.cwd(), "node_modules\\font-awesome\\scss\\font-awesome.scss"),
+                    path.join(process.cwd(), "node_modules\\angular-bootstrap-md\\scss\\bootstrap\\bootstrap.scss"),
+                    path.join(process.cwd(), "node_modules\\angular-bootstrap-md\\scss\\mdb-free.scss"),
                     path.join(process.cwd(), "ClientApp\\styles.scss")
                 ],
                 "test": /\.less$/,
@@ -343,6 +363,9 @@ module.exports = {
             },
             {
                 "include": [
+                    path.join(process.cwd(), "node_modules\\font-awesome\\scss\\font-awesome.scss"),
+                    path.join(process.cwd(), "node_modules\\angular-bootstrap-md\\scss\\bootstrap\\bootstrap.scss"),
+                    path.join(process.cwd(), "node_modules\\angular-bootstrap-md\\scss\\mdb-free.scss"),
                     path.join(process.cwd(), "ClientApp\\styles.scss")
                 ],
                 "test": /\.styl$/,
@@ -380,6 +403,15 @@ module.exports = {
     },
     "plugins": [
         new NoEmitOnErrorsPlugin(),
+        new ScriptsWebpackPlugin({
+            "name": "scripts",
+            "sourceMap": true,
+            "filename": "scripts.bundle.js",
+            "scripts": [
+                "C:\\Projects\\WebApp\\WebApp1\\node_modules\\hammerjs\\hammer.min.js"
+            ],
+            "basePath": "C:\\Projects\\WebApp\\WebApp1"
+        }),
         new CopyWebpackPlugin([
             {
                 "context": "ClientApp",
@@ -413,11 +445,6 @@ module.exports = {
             "cwd": "C:\\Projects\\WebApp\\WebApp1"
         }),
         new NamedLazyChunksWebpackPlugin(),
-        //new UglifyJsPlugin(),
-        new ExtractTextPlugin({
-            filename: "styles.css",
-            allChunks: true
-        }),
         new BaseHrefWebpackPlugin({}),
         new CommonsChunkPlugin({
             "name": [

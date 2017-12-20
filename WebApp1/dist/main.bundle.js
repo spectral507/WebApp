@@ -52,7 +52,7 @@ var AppRoutingModule = (function () {
 /***/ "./ClientApp/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"bg-info text-white\">hi</div>"
+module.exports = "<div class=\"bg-info text-white\">hi</div>\r\n<!-- Provides extra visual weight and identifies the primary action in a set of buttons -->\r\n<button type=\"button\" class=\"btn btn-primary waves-light\" mdbRippleRadius>Primary</button>\r\n\r\n<!-- Default button -->\r\n<button type=\"button\" class=\"btn btn-default waves-light\" mdbRippleRadius>Default</button>\r\n\r\n<!-- Secondary button -->\r\n<button type=\"button\" class=\"btn btn-secondary waves-light\" mdbRippleRadius>Secondary</button>\r\n\r\n<!-- Indicates a successful or positive action -->\r\n<button type=\"button\" class=\"btn btn-success waves-light\" mdbRippleRadius>Success</button>\r\n\r\n<!-- Contextual button for informational alert messages -->\r\n<button type=\"button\" class=\"btn btn-info waves-light\" mdbRippleRadius>Info</button>\r\n\r\n<!-- Indicates caution should be taken with this action -->\r\n<button type=\"button\" class=\"btn btn-warning waves-light\" mdbRippleRadius>Warning</button>\r\n\r\n<!-- Indicates a dangerous or potentially negative action -->\r\n<button type=\"button\" class=\"btn btn-danger waves-light\" mdbRippleRadius>Danger</button>\r\n\r\n<div class=\"md-form\">\r\n    <input mdbActive type=\"text\" id=\"form1\" class=\"form-control\">\r\n    <label for=\"form1\" class=\"\">Example label</label>\r\n</div>\r\n\r\n<div class=\"md-form\">\r\n    <i class=\"fa fa-envelope prefix\"></i>\r\n    <input mdbActive type=\"text\" id=\"form2\" class=\"form-control\">\r\n    <label for=\"form2\">Example label</label>\r\n</div>"
 
 /***/ }),
 

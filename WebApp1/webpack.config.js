@@ -109,7 +109,7 @@ module.exports = {
         ]
     },
     "output": {
-        "path": path.join(process.cwd(), "dist"),
+        "path": path.join(process.cwd(), "wwwroot/dist"),
         "filename": "[name].bundle.js",
         "chunkFilename": "[id].chunk.js",
         "crossOriginLoading": false,
@@ -408,6 +408,7 @@ module.exports = {
             "sourceMap": true,
             "filename": "scripts.bundle.js",
             "scripts": [
+                "C:\\Projects\\WebApp\\WebApp1\\node_modules\\chart.js\\dist\\Chart.js",
                 "C:\\Projects\\WebApp\\WebApp1\\node_modules\\hammerjs\\hammer.min.js"
             ],
             "basePath": "C:\\Projects\\WebApp\\WebApp1"

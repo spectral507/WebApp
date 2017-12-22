@@ -3,16 +3,18 @@ import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 import { AppRoutingModule } from './app-routing.module';
+import { CoreModule } from './core/core.module';
 
 import { AppComponent } from './app.component';
 
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
     ],
     imports: [
         BrowserModule,
+        CoreModule,
         AppRoutingModule,
         MDBBootstrapModule.forRoot()
     ],

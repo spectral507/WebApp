@@ -260,5 +260,5 @@ paket-files/
 __pycache__/
 *.pyc
 
-/WebApp1/wwwroot/dist
 /WebApp1/Identity.db
+/WebApp1/wwwroot/dist/

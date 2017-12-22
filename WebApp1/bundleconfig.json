@@ -1,0 +1,8 @@
+[
+  {
+    "outputFileName": "ClientApp/app/core/register/register.component.min.html",
+    "inputFiles": [
+      "ClientApp/app/core/register/register.component.html"
+    ]
+  }
+]

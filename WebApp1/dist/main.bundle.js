@@ -49,10 +49,28 @@ var AppRoutingModule = (function () {
 
 /***/ }),
 
+/***/ "./ClientApp/app/app.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".navbar {\r\n    background-color: transparent;\r\n    z-index: 1;\r\n}\r\n\r\n@media only screen and (max-width: 768px) {\r\n    .navbar {\r\n        background-color: #1C2331;\r\n    }\r\n}\r\n\r\n@media (min-width: 768px) {\r\n    .view {\r\n        overflow: visible;\r\n    }\r\n}\r\n\r\n.view {\r\n    background: url(\"https://mdbootstrap.com/img/Photos/Others/img (42).jpg\")no-repeat center center;\r\n    background-size: cover;\r\n}\r\n\r\n    .view.hm-indigo-slight {\r\n        position: absolute;\r\n        top: 0;\r\n        width: 100%;\r\n        height: 100%;\r\n    }\r\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
 /***/ "./ClientApp/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"bg-info text-white\">hi</div>\r\n<!-- Provides extra visual weight and identifies the primary action in a set of buttons -->\r\n<button type=\"button\" class=\"btn btn-primary waves-light\" mdbRippleRadius>Primary</button>\r\n\r\n<!-- Default button -->\r\n<button type=\"button\" class=\"btn btn-default waves-light\" mdbRippleRadius>Default</button>\r\n\r\n<!-- Secondary button -->\r\n<button type=\"button\" class=\"btn btn-secondary waves-light\" mdbRippleRadius>Secondary</button>\r\n\r\n<!-- Indicates a successful or positive action -->\r\n<button type=\"button\" class=\"btn btn-success waves-light\" mdbRippleRadius>Success</button>\r\n\r\n<!-- Contextual button for informational alert messages -->\r\n<button type=\"button\" class=\"btn btn-info waves-light\" mdbRippleRadius>Info</button>\r\n\r\n<!-- Indicates caution should be taken with this action -->\r\n<button type=\"button\" class=\"btn btn-warning waves-light\" mdbRippleRadius>Warning</button>\r\n\r\n<!-- Indicates a dangerous or potentially negative action -->\r\n<button type=\"button\" class=\"btn btn-danger waves-light\" mdbRippleRadius>Danger</button>\r\n\r\n<div class=\"md-form\">\r\n    <input mdbActive type=\"text\" id=\"form1\" class=\"form-control\">\r\n    <label for=\"form1\" class=\"\">Example label</label>\r\n</div>\r\n\r\n<div class=\"md-form\">\r\n    <i class=\"fa fa-envelope prefix\"></i>\r\n    <input mdbActive type=\"text\" id=\"form2\" class=\"form-control\">\r\n    <label for=\"form2\">Example label</label>\r\n</div>"
+module.exports = "<header>\r\n    <mdb-navbar SideClass=\"navbar navbar-expand-lg navbar-dark\" [containerInside]=\"true\">\r\n        <logo>\r\n            <a class=\"logo navbar-brand\" href=\"#\"><strong>Navbar</strong></a>\r\n        </logo>\r\n        <links>\r\n            <ul class=\"navbar-nav mr-auto\">\r\n                <li class=\"nav-item active waves-light\">\r\n                    <a class=\"nav-link\">Home <span class=\"sr-only\">(current)</span></a>\r\n                </li>\r\n                <li class=\"nav-item waves-light\" mdbRippleRadius>\r\n                    <a class=\"nav-link\">Link</a>\r\n                </li>\r\n                <li class=\"nav-item waves-light\" mdbRippleRadius>\r\n                    <a class=\"nav-link\">Profile</a>\r\n                </li>\r\n            </ul>\r\n        </links>\r\n    </mdb-navbar>\r\n    <!-- Main -->\r\n    <div class=\"view hm-indigo-slight\">\r\n        <div class=\"full-bg-img flex-center\">\r\n            <div class=\"container\">\r\n                <div class=\"white-text text-center wow fadeInUp\">\r\n                    <h2>This Navbar isn't fixed</h2>\r\n                    <h5>When you scroll down it will disappear</h5>\r\n                    <br>\r\n                    <p>Full page intro with background image will be always displayed in full screen mode, regardless of device </p>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <!-- /.Main -->\r\n</header>\r\n<!--Main Navigation-->\r\n<!--Main Layout-->\r\n<main class=\"text-center py-5 mt-3\">\r\n\r\n    <div class=\"container\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-12\">\r\n\r\n                <p align=\"justify\">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\r\n\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n</main>\r\n<!--Main Layout-->"
 
 /***/ }),
 
@@ -76,7 +94,8 @@ var AppComponent = (function () {
     AppComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-root',
-            template: __webpack_require__("./ClientApp/app/app.component.html")
+            template: __webpack_require__("./ClientApp/app/app.component.html"),
+            styles: [__webpack_require__("./ClientApp/app/app.component.css")]
         })
     ], AppComponent);
     return AppComponent;

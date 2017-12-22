@@ -7,4 +7,12 @@
     <script src="~/dist/main.bundle.js" asp-append-version="true"></script>
 }
 
-<app-root></app-root>
+@section styles {
+    <link href="~/css/loader.css" rel="stylesheet" />
+}
+
+<app-root>
+    <div class="outer">
+        <div class="loader">Loading</div>
+    </div>
+</app-root>

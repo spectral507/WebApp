@@ -1,7 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
-import { ModalDirective } from 'angular-bootstrap-md';
-import { LoginComponent } from './core/login/login.component';
-import { RegisterComponent } from './core/register/register.component';
+import { Component } from '@angular/core';
+//TODO: remove
+import { AccountService } from './core/account.service';
+import { LoginService } from './core/login.service';
 
 @Component({
     selector: 'app-root',
@@ -10,22 +10,30 @@ import { RegisterComponent } from './core/register/register.component';
 })
 export class AppComponent {
 
-    @ViewChild(LoginComponent) loginComponent: LoginComponent;
-    @ViewChild(RegisterComponent) registerComponent: RegisterComponent;
-
-    showLoginModal() {
-        this.loginComponent.showModal();
+    constructor(private _authRepo: AccountService, private _loginService: LoginService) {
     }
 
-    hideLoginModal() {
-        this.loginComponent.hideModal();
+    auth() {
+        this._loginService.login('/first');
     }
 
-    showRegisterModal() {
-        this.registerComponent.showModal();
+    login() {
+        this._authRepo.login('Admin', 'Secret#123')
+            .subscribe(() => {
+                console.log('=> login complete');
+            },
+            error => {
+                console.log('=> login error');
+                for (var err in error) {
+                    console.log('   => ', err);
+                    for (var i in error[err]) {
+                        console.log('     ', error[err][i]);
+                    }
+                }
+            });
     }
 
-    hideRegisterModal() {
-        this.registerComponent.hideModal();
+    logout() {
+        this._authRepo.logout();
     }
 }

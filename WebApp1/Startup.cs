@@ -24,21 +24,33 @@ namespace WebApp1
         {
             services.AddDbContext<AppIdentityDbContext>(optionsBuilder =>
             {
-                //TODO: remove connection string
                 optionsBuilder.UseSqlite(configuration.GetConnectionString("Identity"));
             });
 
-            services.AddIdentity<IdentityUser, IdentityRole>().
-                AddEntityFrameworkStores<AppIdentityDbContext>();
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppIdentityDbContext>();
 
             services.ConfigureApplicationCookie(options =>
             {
                 options.Events = new CookieAuthenticationEvents
                 {
+                    OnRedirectToAccessDenied = context =>
+                    {
+                        if (context.Request.Path.StartsWithSegments("/api") &&
+                            context.Response.StatusCode == 200)
+                        {
+                            context.Response.StatusCode = 403;
+                        }
+                        else
+                        {
+                            context.Response.Redirect(context.RedirectUri);
+                        }
+                        return Task.FromResult<object>(null);
+                    },
                     OnRedirectToLogin = context =>
                     {
-                        if (context.Request.Path.StartsWithSegments("/home")
-                            && context.Response.StatusCode == 200)
+                        if (context.Request.Path.StartsWithSegments("/api") &&
+                            context.Response.StatusCode == 200)
                         {
                             context.Response.StatusCode = 401;
                         }
@@ -74,9 +86,9 @@ namespace WebApp1
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
 
-                //routes.MapSpaFallbackRoute(
-                //    name: "spa-fallback",
-                //    defaults: new { controller = "Home", action = "Index" });
+                routes.MapSpaFallbackRoute(
+                    name: "spa-fallback",
+                    defaults: new { controller = "Home", action = "Index" });
             });
 
             using (var scope = app.ApplicationServices.CreateScope())

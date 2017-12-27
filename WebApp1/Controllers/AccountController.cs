@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using WebApp1.Models.Identity;
@@ -23,22 +24,22 @@ namespace WebApp1.Controllers
         {
             if (ModelState.IsValid)
             {
-                IdentityUser user = await userManager.FindByNameAsync(creds.UsernameOrEmail) ??
-                    await userManager.FindByEmailAsync(creds.UsernameOrEmail);
+                IdentityUser user = await userManager.FindByNameAsync(creds.UserNameOrEmail) ??
+                    await userManager.FindByEmailAsync(creds.UserNameOrEmail);
 
                 if (user != null)
                 {
+                    await signInManager.SignOutAsync();
+
                     Microsoft.AspNetCore.Identity.SignInResult result =
                         await signInManager.PasswordSignInAsync(user, creds.Password, false, false);
+
                     if (result.Succeeded)
                     {
-                        return Ok();
-                    }
-                    else
-                    {
-                        return Unauthorized();
+                        return StatusCode(StatusCodes.Status204NoContent);
                     }
                 }
+                return Unauthorized();
             }
             return BadRequest(ModelState);
         }
@@ -47,7 +48,7 @@ namespace WebApp1.Controllers
         public async Task<IActionResult> Logout()
         {
             await signInManager.SignOutAsync();
-            return Ok();
+            return StatusCode(StatusCodes.Status204NoContent);
         }
     }
 }

@@ -13,7 +13,13 @@ namespace WebApp1.Controllers
         [Authorize]
         public string Restricted()
         {
-            return "asdfasdfasdf";
+            return "authenticated users only info";
+        }
+
+        [Authorize(Roles = "Administrator")]
+        public string AdminOnly()
+        {
+            return "administrator only info";
         }
     }
 }

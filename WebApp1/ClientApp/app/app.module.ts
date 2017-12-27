@@ -5,16 +5,23 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
 
+// TODO: remove FirstComponent, SecondComponent
 import { AppComponent } from './app.component';
+import { FirstComponent } from './first/first.component';
+import { SecondComponent } from './second/second.component';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
     declarations: [
         AppComponent,
+        FirstComponent,
+        SecondComponent,
     ],
     imports: [
         BrowserModule,
         CoreModule,
+        RouterModule,
         AppRoutingModule,
         MDBBootstrapModule.forRoot()
     ],

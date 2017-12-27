@@ -1,6 +1,6 @@
-﻿<app-header (login)="showLoginModal()"></app-header>
-<app-login (register)="hideLoginModal(); showRegisterModal();"></app-login>
-<app-register (login)="hideRegisterModal(); showLoginModal();"></app-register>
+﻿<app-header></app-header>
+<app-login></app-login>
+<app-register></app-register>
 
 <main class="text-center py-5 mt-3">
     <div class="container">
@@ -10,6 +10,13 @@
             </div>
         </div>
     </div>
+    <router-outlet></router-outlet>
+    <button type="button" (click)="login()">login()</button>
+    <button type="button" (click)="logout()">logout()</button>
+    <button type="button" (click)="auth()">auth()</button>
+    <a class="btn btn-sm btn-warning" routerLink="/">/</a>
+    <a class="btn btn-sm btn-warning" routerLink="/first">/first</a>
+    <a class="btn btn-sm btn-warning" routerLink="/second">/second</a>
 </main>
 
 <app-footer></app-footer>

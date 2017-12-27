@@ -1,4 +1,5 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
+import { LoginService } from '../login.service';
 
 @Component({
     selector: 'app-header',
@@ -7,13 +8,9 @@ import { Component, Output, EventEmitter } from '@angular/core';
 })
 export class AppHeaderComponent {
 
-    @Output('login') login: EventEmitter<void>;
+    constructor(private _loginService: LoginService) { }
 
-    constructor() {
-        this.login = new EventEmitter<void>();
-    }
-
-    onLogin() {
-        this.login.emit();
+    login() {
+        this._loginService.login();
     }
 }

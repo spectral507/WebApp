@@ -4,8 +4,8 @@ import { LoginService } from '../login.service';
 import { RegisterService } from '../register.service';
 import { Subscription } from 'rxjs/Subscription';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { AccountService } from '../account.service';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../authentication.service';
 
 @Component({
     selector: 'app-login',
@@ -36,7 +36,7 @@ export class LoginComponent implements OnDestroy {
     @ViewChild('loginModal') private _loginModal: ModalDirective;
     private _returnUrl: string;
 
-    constructor(private _accountService: AccountService,
+    constructor(private _authService: AuthenticationService,
         private _loginService: LoginService,
         private _registerService: RegisterService,
         private _router: Router) {
@@ -78,8 +78,8 @@ export class LoginComponent implements OnDestroy {
     }
 
     register(): void {
+        this._registerService.register(this._returnUrl);
         this.hideModal();
-        this._registerService.register();
     }
 
     getValidationMessages(key: string): string[] {
@@ -95,7 +95,7 @@ export class LoginComponent implements OnDestroy {
                         messages.push('The field is required.');
                         break;
                     case 'minlength':
-                        messages.push('The field is at least 6 characters long.');
+                        messages.push('The field must be at least 6 characters long.');
                         break;
                     default:
                         messages.push('Unknown error.');
@@ -120,7 +120,7 @@ export class LoginComponent implements OnDestroy {
     onSubmit() {
         this._loginFormSubmitted = true;
         if (this._loginForm.valid) {
-            this._accountService.login(this._loginForm.controls.login.value,
+            this._authService.login(this._loginForm.controls.login.value,
                 this._loginForm.controls.password.value)
                 .subscribe(
                 () => {

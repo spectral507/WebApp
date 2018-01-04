@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 
 namespace WebApp1.Models.Identity
 {
-    public class AppIdentityDbContext : IdentityDbContext<IdentityUser>
+    public class AppIdentityDbContext : IdentityDbContext<AppUser>
     {
         public AppIdentityDbContext(DbContextOptions<AppIdentityDbContext> options)
             : base(options) { }
 
         public static async Task CreateAdminAccountAsync(IServiceProvider serviceProvider)
         {
-            UserManager<IdentityUser> userManager =
-                serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            UserManager<AppUser> userManager =
+                serviceProvider.GetRequiredService<UserManager<AppUser>>();
             RoleManager<IdentityRole> roleManager =
                 serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             IConfiguration configuration = serviceProvider.GetRequiredService<IConfiguration>();
@@ -38,7 +38,7 @@ namespace WebApp1.Models.Identity
                     await roleManager.CreateAsync(new IdentityRole(role));
                 }
 
-                IdentityUser user = new IdentityUser()
+                AppUser user = new AppUser()
                 {
                     UserName = userName,
                     Email = email

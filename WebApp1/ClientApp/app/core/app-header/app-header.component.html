@@ -16,10 +16,16 @@
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item waves-light" mdbRippleRadius>
+                <li *ngIf="!isAuthenticated; else accountInfo" class="nav-item waves-light" mdbRippleRadius>
                     <a class="nav-link" (click)="login()"><i class="fa fa-sign-in"></i> <span>Log In</span></a>
                 </li>
             </ul>
         </links>
     </mdb-navbar>
 </header>
+
+<ng-template #accountInfo>
+    <li class="nav-item waves-light" mdbRippleRadius>
+        <a class="nav-link" (click)="logout()"><span>{{userName}}</span> <i class="fa fa-sign-out"></i> <span>Log Out</span></a>
+    </li>
+</ng-template>

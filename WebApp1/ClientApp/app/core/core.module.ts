@@ -12,6 +12,7 @@ import { AuthenticationService } from './authentication.service';
 import { LoginService } from './login.service';
 import { RegisterService } from './register.service';
 import { AccountService } from './account.service';
+import { UserRepositoryService } from './user-repository.service';
 
 @NgModule({
     imports: [
@@ -38,7 +39,8 @@ import { AccountService } from './account.service';
         AccountService,
         AuthenticationService,
         LoginService,
-        RegisterService
+        RegisterService,
+        UserRepositoryService
     ]
 })
 export class CoreModule { }

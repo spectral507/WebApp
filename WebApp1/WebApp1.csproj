@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\app\resolvers\" />
     <Folder Include="ClientApp\app\second\" />
   </ItemGroup>
 

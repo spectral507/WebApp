@@ -12,7 +12,7 @@
                     <i class="fa fa-envelope prefix"></i>
                     <input mdbActive type="text" id="form30" class="form-control" formControlName="login">
                     <label for="form30">Your username or email</label>
-                    <div class="text-center">
+                    <div>
                         <small *ngFor="let msg of getValidationMessages('login')" class="text-danger d-block">{{msg}}</small>
                     </div>
                 </div>
@@ -20,11 +20,11 @@
                     <i class="fa fa-lock prefix"></i>
                     <input mdbActive type="password" id="form31" class="form-control" formControlName="password">
                     <label for="form31">Your password</label>
-                    <div class="text-center">
+                    <div>
                         <small *ngFor="let msg of getValidationMessages('password')" class="text-danger d-block">{{msg}}</small>
                     </div>
                 </div>
-                <div class="text-center">
+                <div>
                     <small *ngFor="let msg of getFormValidationMessages()" class="text-danger d-block">{{msg}}</small>
                 </div>
                 <div class="text-center mt-2">

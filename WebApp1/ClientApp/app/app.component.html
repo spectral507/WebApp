@@ -1,22 +1,30 @@
-﻿<app-header></app-header>
+﻿<ng-progress [color]="'white'" [thick]="true"></ng-progress>
+<app-header></app-header>
 <app-login></app-login>
 <app-register></app-register>
 
-<main class="text-center py-5 mt-3">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <p align="justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<div class="container">
+    <main class="text-center py-5 mt-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p align="justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                </div>
             </div>
         </div>
-    </div>
-    <router-outlet></router-outlet>
-    <button type="button" (click)="login()">login()</button>
-    <button type="button" (click)="logout()">logout()</button>
-    <button type="button" (click)="auth()">auth()</button>
-    <a class="btn btn-sm btn-warning" routerLink="/">/</a>
-    <a class="btn btn-sm btn-warning" routerLink="/first">/first</a>
-    <a class="btn btn-sm btn-warning" routerLink="/second">/second</a>
-</main>
+        <router-outlet></router-outlet>
+        <button type="button" (click)="login()">login()</button>
+        <button type="button" (click)="logout()">logout()</button>
+        <button type="button" (click)="auth()">auth()</button>
+        <button type="button" (click)="createAccount()">createAccount()</button>
+        <button type="button" (click)="showAuthState()">showAuthState()</button>
+        <button type="button" (click)="updateAuthState()">updateAuthState()</button>
+        <button type="button" (click)="getUsers()">getUsers()</button>
+        <a class="btn btn-sm btn-warning" routerLink="/">/</a>
+        <a class="btn btn-sm btn-warning" routerLink="/first">/first</a>
+        <a class="btn btn-sm btn-warning" routerLink="/second">/second</a>
+        <a class="btn btn-sm btn-warning" routerLink="/admin">/admin</a>
+    </main>
+</div>
 
 <app-footer></app-footer>

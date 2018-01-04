@@ -221,12 +221,27 @@ if(true) {
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js?{\"sourceMap\":false,\"importLoaders\":1}!./node_modules/postcss-loader/lib/index.js?{\"ident\":\"postcss\",\"sourceMap\":false}!./node_modules/sass-loader/lib/loader.js?{\"sourceMap\":false,\"precision\":8,\"includePaths\":[]}!./ClientApp/styles.scss":
+/***/ "./node_modules/css-loader/index.js?{\"sourceMap\":false,\"importLoaders\":1}!./node_modules/postcss-loader/lib/index.js?{\"ident\":\"postcss\",\"plugins\":[null,null,null],\"sourceMap\":false}!./ClientApp/table-folding.css":
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
 // imports
 
+
+// module
+exports.push([module.i, "@media screen and (max-width: 575px) {\r\n    table.table-folding thead {\r\n        position: absolute;\r\n        height: 0px;\r\n        overflow: hidden;\r\n    }\r\n\r\n    table.table-folding tr {\r\n        display: block;\r\n    }\r\n\r\n        table.table-folding tr:nth-of-type(odd) {\r\n            box-shadow: 0px 0px 5px #cccccc;\r\n        }\r\n\r\n    table.table-folding td {\r\n        display: block;\r\n        padding-left: 50%;\r\n        position: relative;\r\n    }\r\n\r\n        table.table-folding td::before {\r\n            content: attr(data-label);\r\n            width: 50%;\r\n            font-weight: bold;\r\n            position: absolute;\r\n            padding: .75rem;\r\n            left: 0px;\r\n            top: 0px;\r\n        }\r\n\r\n    table.table-folding.table td::before {\r\n        padding: .3rem;\r\n    }\r\n}\r\n\r\n@media screen and (max-width: 767px) {\r\n    table.table-folding-unfold-md thead {\r\n        position: absolute;\r\n        height: 0px;\r\n        overflow: hidden;\r\n    }\r\n\r\n    table.table-folding-unfold-md tr {\r\n        display: block;\r\n    }\r\n\r\n        table.table-folding-unfold-md tr:nth-of-type(odd) {\r\n            box-shadow: 0px 0px 5px #cccccc;\r\n        }\r\n\r\n    table.table-folding-unfold-md td {\r\n        display: block;\r\n        padding-left: 50%;\r\n        position: relative;\r\n    }\r\n\r\n        table.table-folding-unfold-md td::before {\r\n            content: attr(data-label);\r\n            width: 50%;\r\n            font-weight: bold;\r\n            position: absolute;\r\n            padding: .75rem;\r\n            left: 0px;\r\n            top: 0px;\r\n        }\r\n\r\n    table.table-folding-unfold-md.table-unfold-md td::before {\r\n        padding: .3rem;\r\n    }\r\n}\r\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?{\"sourceMap\":false,\"importLoaders\":1}!./node_modules/postcss-loader/lib/index.js?{\"ident\":\"postcss\",\"sourceMap\":false}!./node_modules/sass-loader/lib/loader.js?{\"sourceMap\":false,\"precision\":8,\"includePaths\":[]}!./ClientApp/styles.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+exports.i(__webpack_require__("./node_modules/css-loader/index.js?{\"sourceMap\":false,\"importLoaders\":1}!./node_modules/postcss-loader/lib/index.js?{\"ident\":\"postcss\",\"plugins\":[null,null,null],\"sourceMap\":false}!./ClientApp/table-folding.css"), "");
 
 // module
 exports.push([module.i, "a:not([href]):not([tabindex]) {\n  color: #0275d8; }\n\na:not([href]):not([tabindex]):focus {\n  color: #0275d8;\n  outline: -webkit-focus-ring-color auto 5px;\n  outline-color: -webkit-focus-ring-color;\n  outline-style: auto;\n  outline-width: 5px; }\n\na:not([href]):not([tabindex]):hover {\n  color: #0056b3; }\n", ""]);

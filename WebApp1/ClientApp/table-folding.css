@@ -1,0 +1,35 @@
+@media screen and (max-width: 575px) {
+    table.table-folding thead {
+        position: absolute;
+        height: 0px;
+        overflow: hidden;
+    }
+
+    table.table-folding tr {
+        display: block;
+    }
+
+        table.table-folding tr:nth-of-type(odd) {
+            box-shadow: 0px 0px 5px #cccccc;
+        }
+
+    table.table-folding td {
+        display: block;
+        padding-left: 50%;
+        position: relative;
+    }
+
+        table.table-folding td::before {
+            content: attr(data-label);
+            width: 50%;
+            font-weight: bold;
+            position: absolute;
+            padding: .75rem;
+            left: 0px;
+            top: 0px;
+        }
+
+    table.table-folding.table-sm td::before {
+        padding: .3rem;
+    }
+}

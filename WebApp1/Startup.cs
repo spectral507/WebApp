@@ -27,7 +27,7 @@ namespace WebApp1
                 optionsBuilder.UseSqlite(configuration.GetConnectionString("Identity"));
             });
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<AppIdentityDbContext>();
 
             services.ConfigureApplicationCookie(options =>

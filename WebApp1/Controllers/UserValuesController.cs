@@ -15,11 +15,11 @@ namespace WebApp1.Controllers
     [Route("api/users")]
     public class UserValuesController : Controller
     {
-        private UserManager<IdentityUser> userManager;
-        private SignInManager<IdentityUser> signInManager;
+        private UserManager<AppUser> userManager;
+        private SignInManager<AppUser> signInManager;
 
-        public UserValuesController(UserManager<IdentityUser> userMgr,
-            SignInManager<IdentityUser> signInMgr)
+        public UserValuesController(UserManager<AppUser> userMgr,
+            SignInManager<AppUser> signInMgr)
         {
             userManager = userMgr;
             signInManager = signInMgr;
@@ -28,7 +28,7 @@ namespace WebApp1.Controllers
         [HttpGet]
         public IActionResult GetUsers()
         {
-            var users = userManager.Users.Select(user => new UserViewModel
+            var users = userManager.Users.Select(user => new UserDetailsViewModel
             {
                 Id = user.Id,
                 UserName = user.UserName,
@@ -45,7 +45,7 @@ namespace WebApp1.Controllers
 
             if (user != null)
             {
-                return Ok(new UserViewModel
+                return Ok(new UserDetailsViewModel
                 {
                     Id = user.Id,
                     UserName = user.UserName,
@@ -61,7 +61,7 @@ namespace WebApp1.Controllers
         {
             if (ModelState.IsValid)
             {
-                IdentityUser user = new IdentityUser
+                AppUser user = new AppUser
                 {
                     UserName = model.UserName ?? model.Email,
                     Email = model.Email
@@ -90,7 +90,7 @@ namespace WebApp1.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(string id)
         {
-            IdentityUser user = await userManager.FindByIdAsync(id);
+            AppUser user = await userManager.FindByIdAsync(id);
             if (user != null)
             {
                 IdentityResult result = await userManager.DeleteAsync(user);

@@ -1,53 +1,68 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { AccountService } from './account.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/catch';
+import { User } from '../shared/models/user.model';
+import { Router } from '@angular/router';
 
-const loginUrl = '/api/account/login';
-const logoutUrl = '/api/account/logout';
-
-//TODO: change
 @Injectable()
 export class AuthenticationService {
 
-    authenticated: boolean;
-    userNameOrEmail: string;
+    get user(): User {
+        return this._user;
+    }
 
-    constructor(private httpClient: HttpClient) {
-        this.resetAuthenticationState();
+    private _user: User;
+
+    constructor(private _accountService: AccountService, private _router: Router) {
+        this._user = { isAuthenticated: false, details: null };
+        this.updateState();
     }
 
     login(userNameOrEmail: string, password: string): Observable<void | {}> {
 
-        this.resetAuthenticationState();
+        this.reset();
 
-        return this.httpClient
-            .post<void>(loginUrl, { userNameOrEmail: userNameOrEmail, password: password })
-            .do(() => {
-                this.authenticated = true;
-                this.userNameOrEmail = userNameOrEmail;
-            })
-            .catch((errorResponse: HttpErrorResponse) => {
-                if (errorResponse.status == 400) {
-                    throw errorResponse.error;
-                }
-                else if (errorResponse.status == 401) {
-                    throw { '': ['Invalid login or/and password.'] };
-                }
-                else {
-                    throw { '': ['Unknown error.'] };
-                }
+        return this._accountService
+            .login(userNameOrEmail, password)
+            .do(
+            (user: User) => {
+                this._user = user;
+                // TODO: remove
+                console.log('=> Authentication Service: logged in', this._user);
+            },
+            (error) => {
+                // TODO: remove
+                console.log('=> Authentication Service: error');
             });
     }
 
     logout(): void {
-        this.resetAuthenticationState();
-        this.httpClient.post<void>(logoutUrl, null).subscribe(() => { });
+        this.reset();
+        this._accountService.logout();
+        this._router.navigateByUrl('');
     }
 
-    private resetAuthenticationState() {
-        this.authenticated = false;
-        this.userNameOrEmail = null;
+    updateState(): void {
+
+        this.reset();
+
+        this._accountService
+            .getAuthenticationState()
+            .subscribe(
+            (user: User) => {
+                this._user = user;
+            },
+            (error) => {
+                // TODO: remove
+                console.log('=> Authentication Service: error');
+            });
+    }
+
+    //TODO: change
+    private reset() {
+        this._user.isAuthenticated = false;
+        this._user.details = null;
     }
 }

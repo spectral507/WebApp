@@ -1,0 +1,35 @@
+@media screen and (max-width: 1199px) {
+    table.table-folding-unfold-xl thead {
+        position: absolute;
+        height: 0px;
+        overflow: hidden;
+    }
+
+    table.table-folding-unfold-xl tr {
+        display: block;
+    }
+
+        table.table-folding-unfold-xl tr:nth-of-type(odd) {
+            box-shadow: 0px 0px 5px #cccccc;
+        }
+
+    table.table-folding-unfold-xl td {
+        display: block;
+        padding-left: 50%;
+        position: relative;
+    }
+
+        table.table-folding-unfold-xl td::before {
+            content: attr(data-label);
+            width: 50%;
+            font-weight: bold;
+            position: absolute;
+            padding: .75rem;
+            left: 0px;
+            top: 0px;
+        }
+
+    table.table-folding-unfold-xl.table-sm td::before {
+        padding: .3rem;
+    }
+}

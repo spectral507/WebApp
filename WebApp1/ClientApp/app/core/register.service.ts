@@ -5,18 +5,18 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class RegisterService implements OnDestroy {
 
-    private _registerEvents: Subject<void>;
+    private _registerEvents: Subject<string>;
 
-    get registerEvents(): Observable<void> {
+    get registerEvents(): Observable<string> {
         return this._registerEvents.asObservable();
     }
 
     constructor() {
-        this._registerEvents = new Subject<void>();
+        this._registerEvents = new Subject<string>();
     }
 
-    register() {
-        this._registerEvents.next();
+    register(returnUrl?: string) {
+        this._registerEvents.next(returnUrl);
     }
 
     ngOnDestroy(): void {

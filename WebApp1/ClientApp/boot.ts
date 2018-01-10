@@ -1,22 +1,29 @@
-import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
-import { AppModule } from "./app/app.module";
+﻿import { ApplicationRef, NgModuleRef } from '@angular/core';
+import { createNewHosts } from '@angularclass/hmr';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-const bootApplication = () => {
-    platformBrowserDynamic().bootstrapModule(AppModule);
+import { AppModule } from './app/app.module';
+
+const hmrBootStrap: Function = async (): Promise<void> => {
+    module['hot'].accept();
+    const ngModule: NgModuleRef<AppModule> = await bootstrap();
+    module['hot'].dispose(() => {
+        const makeVisible: () => void = createNewHosts(
+            ngModule.injector.get(ApplicationRef).components.map(
+                c => c.location.nativeElement
+            )
+        );
+        ngModule.destroy();
+        makeVisible();
+    });
 };
 
-if (module["hot"]) {
-    module["hot"].accept();
-    module["hot"].dispose(() => {
-        const oldRootElem = document.querySelector("app-root");
-        const newRootElem = document.createElement("app-root");
-        oldRootElem.parentNode.insertBefore(newRootElem, oldRootElem);
-        platformBrowserDynamic().destroy();
-    });
-}
+const bootstrap: any = (): Promise<NgModuleRef<AppModule>> => {
+    return platformBrowserDynamic().bootstrapModule<AppModule>(AppModule);
+};
 
-if (document.readyState === "complete") {
-    bootApplication();
+if (module['hot']) {
+    hmrBootStrap();
 } else {
-    document.addEventListener("DOMContentLoaded", bootApplication);
+    bootstrap();
 }

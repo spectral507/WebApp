@@ -92456,6 +92456,338 @@ var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["_10" /* Version *
 
 /***/ }),
 
+/***/ "./node_modules/@angularclass/hmr/dist/experimental.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// Experimental API below
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * get input values
+ *
+ * Extended by: Gabriel Schuster <github.com@actra.de>
+ * Now gets values of inputs (including "checked" status radios, checkboxes), textareas and selects (including multiselects)
+ * Tries to identify the elements as exact as possible, falls back to numeric index when identification fails
+ * WIP refactor by: PatrickJS
+ */
+function __getInputValues() {
+    var _inputs = document.querySelectorAll('input, textarea, select');
+    var inputs = Array.prototype.slice.call(_inputs);
+    return inputs.map(function (input) {
+        var inputTagName = input.tagName.toLowerCase();
+        var inputType = input.type;
+        var inputId = (input.id && typeof input.id === 'string') ? input.id : null;
+        var inputName = (input.name && typeof input.name === 'string') ? input.name : null;
+        var inputValue = (input.value && typeof input.value === 'string') ? input.value : null;
+        var inputChildNodes = input.childNodes;
+        var inputSelected = Boolean(input.selected);
+        var elementStore = {
+            'tag': inputTagName,
+            'type': null,
+            'id': inputId,
+            'name': inputName,
+            'value': '',
+            'checked': false,
+            'options': []
+        };
+        if ('input' === inputTagName || 'textarea' === inputTagName) {
+            elementStore['type'] = inputType;
+            if ('input' !== inputTagName) {
+                elementStore['value'] = inputValue;
+                return elementStore;
+            }
+            switch (inputType) {
+                case 'checkbox':
+                case 'radio':
+                    elementStore['checked'] = inputSelected;
+                    elementStore['value'] = inputValue;
+                    return elementStore;
+                case 'image':
+                case 'button':
+                case 'submit':
+                case 'reset':
+                default:
+                    // These types don't need any config and thus need no update, they only were stored because they match "input"
+                    return elementStore;
+            }
+        }
+        else if ('select' === inputTagName) {
+            var childNodes = Array.prototype.slice.call(inputChildNodes);
+            var options = childNodes.map(function (option, i) {
+                return { value: option['value'], selected: Boolean(option['selected']) };
+            });
+            elementStore['options'] = options;
+            return elementStore;
+        }
+        return elementStore;
+    });
+}
+exports.__getInputValues = __getInputValues;
+/**
+ * set input values
+ *
+ * Extended by: Gabriel Schuster <github.com@actra.de>
+ * WIP refactor by: PatrickJS
+ */
+function __setInputValues($inputs) {
+    var inputs = document.querySelectorAll('input, textarea');
+    $inputs.forEach(function (store, i) {
+        if ('input' === store.tag || 'textarea' === store.tag) {
+            if ('input' === store.tag && ('checkbox' === store.type || 'radio' === store.type)) {
+                var selector = 'input' + (null !== store.id ? '#' + store.id : '') + '[type="' + store.type + '"]' + (null !== store.name ? '[name="' + store.name + '"]' : '') +
+                    '[value="' + store.value + '"]';
+                var element = document.body.querySelector(selector);
+                if (element && Boolean(store['checked'])) {
+                    element['checked'] = 'checked';
+                    element.dispatchEvent(new CustomEvent('input', { detail: element['checked'] }));
+                }
+            }
+            else if ('input' === store.tagName.toLowerCase() &&
+                ('image' === store.type || 'button' === store.type || 'submit' === store.type || 'reset' === store.type)) {
+                // These types don't need any config and thus need no update, they only were stored because they match "input"
+            }
+            else {
+                if (null === store.id && null === store.name) {
+                    if (store.value.length &&
+                        inputs[i] &&
+                        inputs[i].tagName.toLowerCase() === store.tag &&
+                        ('textarea' === store.tag || inputs[i].getAttribute('type') === store.type) &&
+                        ('string' !== typeof inputs[i].id || !inputs[i].id.length) &&
+                        ('string' !== typeof inputs[i].getAttribute('name') ||
+                            !inputs[i].getAttribute('name').length)) {
+                        inputs[i]['value'] = store.value;
+                        inputs[i].dispatchEvent(new CustomEvent('input', { detail: inputs[i]['value'] }));
+                    }
+                }
+                else {
+                    var selector = 'input' +
+                        (null !== store.id ? '#' + store.id : '') + ('input' === store.tag ? '[type="' + store.type + '"]' : '') +
+                        (null !== store.name ? '[name="' + store.name + '"]' : '');
+                    var element = document.body.querySelector(selector);
+                    if (element && store.value.length) {
+                        element['value'] = store.value;
+                        element.dispatchEvent(new CustomEvent('input', { detail: element['value'] }));
+                    }
+                }
+            }
+        }
+        else if ('select' === store.tag) {
+            var select_1 = null;
+            if (null === store.id && null === store.name) {
+                if (inputs[i] && inputs[i].tagName.toLowerCase() === store.tag && ('string' !== typeof inputs[i].id || !inputs[i].id.length) &&
+                    ('string' !== typeof inputs[i].getAttribute('name') || !inputs[i].getAttribute('name').length)) {
+                    select_1 = inputs[i];
+                }
+            }
+            else {
+                var selector = 'select' + (null !== store.id ? '#' + store.id : '') + (null !== store.name ? '[name="' + store.name + '"]' : '');
+                var element = document.body.querySelector(selector);
+                if (element) {
+                    select_1 = element;
+                }
+            }
+            if (select_1) {
+                store.options.forEach(function (storedOption, j) {
+                    var option = select_1.querySelector('option[value="' + storedOption.value + '"]');
+                    if (!option &&
+                        select_1.childNodes[j] &&
+                        ('string' !== typeof select_1.childNodes[j]['value'] || !select_1.childNodes[j]['value'].length)) {
+                        option = select_1.childNodes[j];
+                    }
+                    if (option && !!storedOption.selected) {
+                        option['selected'] = 'selected';
+                        option.dispatchEvent(new CustomEvent('input', { detail: option['selected'] }));
+                    }
+                });
+            }
+        }
+    });
+}
+exports.__setInputValues = __setInputValues;
+function __createInputTransfer() {
+    var $inputs = __getInputValues();
+    return function restoreInputValues() {
+        return __setInputValues($inputs);
+    };
+}
+exports.__createInputTransfer = __createInputTransfer;
+//# sourceMappingURL=experimental.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@angularclass/hmr/dist/helpers.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+// Hot Module Replacement
+function identity(val) {
+    return val;
+}
+function bootloader(main, before, after) {
+    if (typeof main === 'object') {
+        var _main = main.main;
+        before = main.before;
+        after = main.after;
+        main = _main;
+    }
+    before = before || identity;
+    after = after || identity;
+    var readyState = document.readyState;
+    function __domReadyHandler() {
+        document.removeEventListener('DOMContentLoaded', __domReadyHandler);
+        after(main(before(readyState)));
+    }
+    switch (readyState) {
+        case 'loading':
+            document.addEventListener('DOMContentLoaded', __domReadyHandler);
+            break;
+        case 'interactive':
+        case 'complete':
+        default:
+            after(main(before(readyState)));
+    }
+}
+exports.bootloader = bootloader;
+// create new host elements and remove the old elements
+function createNewHosts(cmps) {
+    var components = Array.prototype.map.call(cmps, function (componentNode) {
+        var newNode = document.createElement(componentNode.tagName);
+        var parentNode = componentNode.parentNode;
+        var currentDisplay = newNode.style.display;
+        newNode.style.display = 'none';
+        parentNode.insertBefore(newNode, componentNode);
+        function removeOldHost() {
+            newNode.style.display = currentDisplay;
+            try {
+                parentNode.removeChild(componentNode);
+            }
+            catch (e) { }
+        }
+        return removeOldHost;
+    });
+    return function removeOldHosts() {
+        components.forEach(function (removeOldHost) { return removeOldHost(); });
+    };
+}
+exports.createNewHosts = createNewHosts;
+// remove old styles
+function removeNgStyles() {
+    var docHead = document.head;
+    var _styles = docHead.querySelectorAll('style');
+    var styles = Array.prototype.slice.call(_styles);
+    styles
+        .filter(function (style) { return style.innerText.indexOf('_ng') !== -1; })
+        .map(function (el) { return docHead.removeChild(el); });
+}
+exports.removeNgStyles = removeNgStyles;
+// get input values
+function getInputValues() {
+    var _inputs = document.querySelectorAll('input');
+    var inputs = Array.prototype.slice.call(_inputs);
+    return inputs.map(function (input) { return input.value; });
+}
+exports.getInputValues = getInputValues;
+// set input values
+function setInputValues(_inputs) {
+    var inputs = document.querySelectorAll('input');
+    if (_inputs && inputs.length === _inputs.length) {
+        _inputs.forEach(function (value, i) {
+            var el = inputs[i];
+            el.value = value;
+            el.dispatchEvent(new CustomEvent('input', { detail: el.value }));
+        });
+        // clear array
+        _inputs.length = 0;
+    }
+}
+exports.setInputValues = setInputValues;
+// get/set input values
+function createInputTransfer() {
+    var _inputs = getInputValues();
+    return function restoreInputValues() {
+        return setInputValues(_inputs);
+    };
+}
+exports.createInputTransfer = createInputTransfer;
+//# sourceMappingURL=helpers.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@angularclass/hmr/dist/hmr.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MODULE_CONFIG = {
+    'OnInit': 'hmrOnInit',
+    'OnStatus': 'hmrOnStatus',
+    'OnCheck': 'hmrOnCheck',
+    'OnDecline': 'hmrOnDecline',
+    'OnDestroy': 'hmrOnDestroy',
+    'AfterDestroy': 'hmrAfterDestroy'
+};
+function hmrModule(MODULE_REF, MODULE, CONFIG) {
+    if (CONFIG === void 0) { CONFIG = exports.MODULE_CONFIG; }
+    if (MODULE['hot']) {
+        MODULE['hot']['accept']();
+        if (MODULE_REF.instance[exports.MODULE_CONFIG['OnInit']]) {
+            if (MODULE['hot']['data']) {
+                MODULE_REF.instance[exports.MODULE_CONFIG['OnInit']](MODULE['hot']['data']);
+            }
+        }
+        if (MODULE_REF.instance[exports.MODULE_CONFIG['OnStatus']]) {
+            MODULE['hot']['apply'](function hmrOnStatus(status) {
+                MODULE_REF.instance[exports.MODULE_CONFIG['OnStatus']](status);
+            });
+        }
+        if (MODULE_REF.instance[exports.MODULE_CONFIG['OnCheck']]) {
+            MODULE['hot']['check'](function hmrOnCheck(err, outdatedModules) {
+                MODULE_REF.instance[exports.MODULE_CONFIG['OnCheck']](err, outdatedModules);
+            });
+        }
+        if (MODULE_REF.instance[exports.MODULE_CONFIG['OnDecline']]) {
+            MODULE['hot']['decline'](function hmrOnDecline(dependencies) {
+                MODULE_REF.instance[exports.MODULE_CONFIG['OnDecline']](dependencies);
+            });
+        }
+        MODULE['hot']['dispose'](function hmrOnDestroy(store) {
+            if (MODULE_REF.instance[exports.MODULE_CONFIG['OnDestroy']]) {
+                MODULE_REF.instance[exports.MODULE_CONFIG['OnDestroy']](store);
+            }
+            MODULE_REF.destroy();
+            if (MODULE_REF.instance[exports.MODULE_CONFIG['AfterDestroy']]) {
+                MODULE_REF.instance[exports.MODULE_CONFIG['AfterDestroy']](store);
+            }
+        });
+    }
+    return MODULE_REF;
+}
+exports.hmrModule = hmrModule;
+//# sourceMappingURL=hmr.js.map
+
+/***/ }),
+
+/***/ "./node_modules/@angularclass/hmr/dist/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+// Hot Module Replacement
+__export(__webpack_require__("./node_modules/@angularclass/hmr/dist/helpers.js"));
+__export(__webpack_require__("./node_modules/@angularclass/hmr/dist/experimental.js"));
+__export(__webpack_require__("./node_modules/@angularclass/hmr/dist/hmr.js"));
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
 /***/ "./node_modules/@ngx-progressbar/core/esm5/ngx-progressbar-core.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 

@@ -1,20 +1,30 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { FirstComponent } from './first/first.component';
-import { SecondComponent } from './second/second.component';
-import { AuthenticationGuard } from './guards/authentication.guard';
+import { RouterModule, Routes } from '@angular/router';
+
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
+import { AccountComponent } from './account/account.component';
+import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './account/login/login.component';
+import { SignupComponent } from './account/signup/signup.component';
 
 const routes: Routes = [
-    { path: 'first', component: FirstComponent },
-    { path: 'second', component: SecondComponent, canActivate: [AuthenticationGuard] },
-    { path: 'access-denied', component: AccessDeniedComponent },
-    { path: 'admin', loadChildren: './admin/admin.module#AdminModule' }
+    { path: '', component: HomeComponent, data: { state: 'home' } },
+    {
+        path: 'account',
+        component: AccountComponent,
+        children: [
+            { path: 'login', component: LoginComponent, data: { state: 'login' } },
+            { path: 'signup', component: SignupComponent, data: { state: 'signup' } }
+        ],
+        data: { state: 'account' }
+    }
+    //{ path: 'access-denied', component: AccessDeniedComponent },
+    //{ path: 'admin', loadChildren: './admin/admin.module#AdminModule' }
 ];
 
 @NgModule({
     imports: [RouterModule.forRoot(routes)],
     exports: [RouterModule],
-    providers: [AuthenticationGuard]
+    providers: []
 })
 export class AppRoutingModule { }

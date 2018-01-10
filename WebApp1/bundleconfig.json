@@ -4,5 +4,11 @@
     "inputFiles": [
       "ClientApp/app/core/register/register.component.html"
     ]
+  },
+  {
+    "outputFileName": "ClientApp/app/account/account.component.min.html",
+    "inputFiles": [
+      "ClientApp/app/account/account.component.html"
+    ]
   }
 ]

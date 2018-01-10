@@ -52,4 +52,8 @@ export class UserRepositoryService {
                 }
             });
     }
+
+    deleteUser(id: string): Observable<void> {
+        return this._httpClient.delete<void>(`${this._usersUrl}/${id}`);
+    }
 }

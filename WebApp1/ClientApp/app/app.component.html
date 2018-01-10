@@ -1,29 +1,18 @@
 ﻿<ng-progress [color]="'white'" [thick]="true"></ng-progress>
 <app-header></app-header>
-<app-login></app-login>
-<app-register></app-register>
 
-<div class="container">
-    <main class="text-center py-5 mt-3">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <p align="justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                </div>
-            </div>
+<div class="container py-5 mt-4">
+    <main>
+        <div>
+            <a routerLink="/" class="btn btn-sm btn-primary">home</a>
+            <a routerLink="/account" class="btn btn-sm btn-primary">account</a>
+            <a routerLink="/account/login" class="btn btn-sm btn-primary">account/login</a>
+            <a routerLink="/account/signup" class="btn btn-sm btn-primary">account/signup</a>
         </div>
-        <router-outlet></router-outlet>
-        <button type="button" (click)="login()">login()</button>
-        <button type="button" (click)="logout()">logout()</button>
-        <button type="button" (click)="auth()">auth()</button>
-        <button type="button" (click)="createAccount()">createAccount()</button>
-        <button type="button" (click)="showAuthState()">showAuthState()</button>
-        <button type="button" (click)="updateAuthState()">updateAuthState()</button>
-        <button type="button" (click)="getUsers()">getUsers()</button>
-        <a class="btn btn-sm btn-warning" routerLink="/">/</a>
-        <a class="btn btn-sm btn-warning" routerLink="/first">/first</a>
-        <a class="btn btn-sm btn-warning" routerLink="/second">/second</a>
-        <a class="btn btn-sm btn-warning" routerLink="/admin">/admin</a>
+        <div>{{getState(outlet)}}</div>
+        <div #outletContainer [@rootRouting]="getState(outlet)" class="outlet-container" [style.height]="outletContainerHeight">
+            <router-outlet #outlet="outlet"></router-outlet>
+        </div>
     </main>
 </div>
 

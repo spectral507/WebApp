@@ -1,0 +1,7 @@
+<p>
+    account works!
+</p>
+<div>{{getState(outlet)}}</div>
+<div #outletContainer [@accountRouting]="getState(outlet)" class="outlet-container">
+    <router-outlet #outlet="outlet"></router-outlet>
+</div>

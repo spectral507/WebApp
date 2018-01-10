@@ -1,69 +1,31 @@
-import { Component } from '@angular/core';
-//TODO: remove
-import { AccountService } from './core/account.service';
-import { LoginService } from './core/login.service';
-//TODO: remove
-import { UserRepositoryService } from './core/user-repository.service';
-import { AuthenticationService } from './core/authentication.service';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+
+import { RootOutletResizeService } from './shared/root-outlet-resize.service';
+
+import { rootRoutingTrigger } from './animations/root-routing.trigger';
 
 @Component({
     selector: 'app-root',
     templateUrl: 'app.component.html',
-    styleUrls: ['app.component.css']
+    styleUrls: ['app.component.css'],
+    animations: [rootRoutingTrigger],
+    providers: [RootOutletResizeService]
 })
 export class AppComponent {
 
-    constructor(private _authRepo: AccountService, private _loginService: LoginService,
-        private _userRepo: UserRepositoryService, private _authService: AuthenticationService) {
+    @ViewChild('outletContainer') outletContainer: ElementRef;
+
+    constructor(private _rootOutletResizeService: RootOutletResizeService) { }
+
+    ngAfterViewInit(): void {
+
+        this._rootOutletResizeService.height.subscribe(value => {
+            this.outletContainer.nativeElement.style.height = value ? `${value}px` : 'auto';
+        });
     }
 
-    auth() {
-        this._loginService.login('/first');
-    }
-
-    login() {
-        this._authService.login('Admin', 'Secret#123')
-            .subscribe(() => {
-                console.log('=> login complete');
-            },
-            error => {
-                console.log('=> login error');
-                for (var err in error) {
-                    console.log('   => ', err);
-                    for (var i in error[err]) {
-                        console.log('     ', error[err][i]);
-                    }
-                }
-            });
-    }
-
-    logout() {
-        this._authService.logout();
-    }
-
-    createAccount() {
-        this._userRepo.createUser(null, 'myemail@example.com', 'd').subscribe(
-            () => {
-                console.log('=> ACCOUNT CREATED');
-            },
-            (error) => {
-                console.log('=> ACCOUNT ERROR');
-                console.log(error);
-            });
-    }
-
-    showAuthState() {
-        console.log(this._authService.user);
-    }
-
-    updateAuthState() {
-        this._authService.updateState();
-    }
-
-    getUsers() {
-        this._userRepo.getUsers().subscribe(
-            users => {
-                console.log(users);
-            });
+    getState(outlet: RouterOutlet) {
+        return outlet.activatedRouteData.state;
     }
 }

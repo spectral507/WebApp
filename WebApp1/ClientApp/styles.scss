@@ -18,3 +18,29 @@ a:not([href]):not([tabindex]):focus {
 a:not([href]):not([tabindex]):hover {
     color: $link-color-hover;
 }
+
+html {
+    min-height: 100%;
+    position: relative;
+}
+
+body {
+    padding-top: 1px;
+    margin-bottom: 280px;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.outlet-container {
+    position: relative;
+}
+
+.animated-container {
+    display: block;
+    position: absolute;
+    width: 100%;
+}

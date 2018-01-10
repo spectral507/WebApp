@@ -61,7 +61,7 @@ export class AuthenticationService {
     }
 
     //TODO: change
-    private reset() {
+    public reset() {
         this._user.isAuthenticated = false;
         this._user.details = null;
     }

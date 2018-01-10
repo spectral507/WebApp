@@ -1,46 +1,24 @@
-import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 
-import { AppHeaderComponent } from './app-header/app-header.component';
-import { AppFooterComponent } from './app-footer/app-footer.component';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
-import { AuthenticationService } from './authentication.service';
-import { LoginService } from './login.service';
-import { RegisterService } from './register.service';
-import { AccountService } from './account.service';
-import { UserRepositoryService } from './user-repository.service';
+import { FooterComponent } from './footer/footer.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
     imports: [
         CommonModule,
-        MDBBootstrapModule.forRoot(),
-        HttpClientModule,
-        FormsModule,
-        ReactiveFormsModule
+        MDBBootstrapModule.forRoot()
     ],
     declarations: [
-        AppHeaderComponent,
-        AppFooterComponent,
-        LoginComponent,
-        RegisterComponent
+        FooterComponent,
+        HeaderComponent
     ],
     schemas: [NO_ERRORS_SCHEMA],
     exports: [
-        AppHeaderComponent,
-        AppFooterComponent,
-        LoginComponent,
-        RegisterComponent
+        FooterComponent,
+        HeaderComponent
     ],
-    providers: [
-        AccountService,
-        AuthenticationService,
-        LoginService,
-        RegisterService,
-        UserRepositoryService
-    ]
+    providers: []
 })
 export class CoreModule { }

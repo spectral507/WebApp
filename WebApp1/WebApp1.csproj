@@ -26,8 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="ClientApp\app\account\shared\" />
     <Folder Include="ClientApp\app\resolvers\" />
-    <Folder Include="ClientApp\app\second\" />
   </ItemGroup>
 
 </Project>

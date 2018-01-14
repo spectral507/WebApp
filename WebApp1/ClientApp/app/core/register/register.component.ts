@@ -3,7 +3,7 @@ import { ModalDirective } from 'angular-bootstrap-md';
 import { LoginService } from '../login.service';
 import { RegisterService } from '../register.service';
 import { Subscription } from 'rxjs/Subscription';
-import { UserRepositoryService } from '../user-repository.service';
+//import { UserRepositoryService } from '../user-repository.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
@@ -44,8 +44,7 @@ export class RegisterComponent implements OnDestroy {
     private _returnUrl: string;
 
     constructor(private _loginService: LoginService,
-        private _registerService: RegisterService,
-        private _userRepository: UserRepositoryService) {
+        private _registerService: RegisterService) {
 
         this._registerEventsSubscription = this._registerService.registerEvents.subscribe((returnUrl) => {
             this.showModal();
@@ -148,24 +147,24 @@ export class RegisterComponent implements OnDestroy {
 
     onSubmit(): void {
         this._registerFormSubmitted = true;
-        if (this._registerForm.valid) {
-            this._userRepository.createUser(
-                this.userNameControl.value === '' ? null : this.userNameControl.value,
-                this.emailControl.value,
-                this.passwordControl.value)
-                .subscribe(
-                () => {
-                    this._loginService.login(this._returnUrl);
-                    this.hideModal();
-                },
-                (error) => {
-                    if (error) {
-                        if (!this._registerForm.errors) {
-                            this._registerForm.setErrors(error);
-                        }
-                    }
-                });
-        }
+        //if (this._registerForm.valid) {
+        //    this._userRepository.createUser(
+        //        this.userNameControl.value === '' ? null : this.userNameControl.value,
+        //        this.emailControl.value,
+        //        this.passwordControl.value)
+        //        .subscribe(
+        //        () => {
+        //            this._loginService.login(this._returnUrl);
+        //            this.hideModal();
+        //        },
+        //        (error) => {
+        //            if (error) {
+        //                if (!this._registerForm.errors) {
+        //                    this._registerForm.setErrors(error);
+        //                }
+        //            }
+        //        });
+        //}
     }
 
     ngOnDestroy(): void {

@@ -1,7 +1,7 @@
 ﻿import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserDetails } from '../../shared/models/user-details.model';
-import { UserRepositoryService } from '../../core/user-repository.service';
+//import { UserRepositoryService } from '../../core/user-repository.service';
 
 @Component({
     selector: 'app-users',
@@ -15,7 +15,7 @@ export class UsersComponent {
 
     private _users: UserDetails[];
 
-    constructor(private _userRepo: UserRepositoryService, route: ActivatedRoute) {
+    constructor(route: ActivatedRoute) {
         //TODO: remove
         console.log('=> UsersComponent CREATE');
         route.data.subscribe(data => {
@@ -28,13 +28,13 @@ export class UsersComponent {
     }
 
     deleteUser(id: string): void {
-        this._userRepo
-            .deleteUser(id)
-            .subscribe(() => {
-                let index = this._users.findIndex((value: UserDetails) => {
-                    return value.id == id;
-                });
-                this._users.splice(index);
-            });
+        //this._userRepo
+        //    .deleteUser(id)
+        //    .subscribe(() => {
+        //        let index = this._users.findIndex((value: UserDetails) => {
+        //            return value.id == id;
+        //        });
+        //        this._users.splice(index);
+        //    });
     }
 }

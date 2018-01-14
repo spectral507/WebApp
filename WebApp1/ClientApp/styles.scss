@@ -44,3 +44,33 @@ footer {
     position: absolute;
     width: 100%;
 }
+
+/*dropdown fix*/
+.dropdown .dropdown-menu a.dropdown-item {
+    display: block;
+    width: auto;
+    margin: 12px;
+    padding: 0px;
+}
+
+.dropdown .dropdown-menu a.dropdown-item:hover {
+    background-color: white;
+}
+
+.dropdown .dropdown-menu a.dropdown-item span {
+    display: block;
+    padding: 5px;
+    padding-left: 9px;
+    border-radius: 2px;
+    transition: background-color 100ms, color 100ms;
+}
+
+.dropdown .dropdown-menu a.dropdown-item:hover span {
+    color: white;
+    box-shadow: 0 5px 11px 0 rgba(0,0,0,.18), 0 4px 15px 0 rgba(0,0,0,.15);
+}
+
+.dropdown .dropdown-menu.dropdown-stylish-color a.dropdown-item:hover span {
+    background-color: #4b515d;
+}
+/*dropdown fix end*/

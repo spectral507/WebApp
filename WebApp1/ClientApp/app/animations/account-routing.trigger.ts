@@ -18,4 +18,4 @@ export const accountRoutingTrigger = trigger('accountRouting', [
                 style({ opacity: 1 }))
         ], { optional: true })
     ])
-])
+]);

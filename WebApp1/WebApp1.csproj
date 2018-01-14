@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\app\account\shared\" />
+    <Folder Include="ClientApp\app\home\shared\" />
     <Folder Include="ClientApp\app\resolvers\" />
   </ItemGroup>
 

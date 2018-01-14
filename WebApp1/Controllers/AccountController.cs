@@ -11,12 +11,14 @@ namespace WebApp1.Controllers
     {
         private UserManager<AppUser> userManager;
         private SignInManager<AppUser> signInManager;
+        private RoleManager<IdentityRole> roleManager;
 
         public AccountController(UserManager<AppUser> userMgr,
-            SignInManager<AppUser> signInMgr)
+            SignInManager<AppUser> signInMgr, RoleManager<IdentityRole> roleMgr)
         {
             userManager = userMgr;
             signInManager = signInMgr;
+            roleManager = roleMgr;
         }
 
         [HttpPost("login")]
@@ -36,6 +38,14 @@ namespace WebApp1.Controllers
 
                     if (result.Succeeded)
                     {
+                        IdentityRole role = await roleManager.FindByNameAsync("Administrator");
+
+                        bool isAdmin = false;
+                        if (role != null)
+                        {
+                            isAdmin = await userManager.IsInRoleAsync(user, role.Name);
+                        }
+
                         return Ok(new UserViewModel
                         {
                             IsAuthenticated = true,
@@ -43,7 +53,8 @@ namespace WebApp1.Controllers
                             {
                                 Id = user.Id,
                                 UserName = user.UserName,
-                                Email = user.Email
+                                Email = user.Email,
+                                IsAdministrator = isAdmin
                             }
                         });
                     }
@@ -63,6 +74,14 @@ namespace WebApp1.Controllers
 
                 if (user != null)
                 {
+                    IdentityRole role = await roleManager.FindByNameAsync("Administrator");
+
+                    bool isAdmin = false;
+                    if (role != null)
+                    {
+                        isAdmin = await userManager.IsInRoleAsync(user, role.Name);
+                    }
+
                     return Ok(new UserViewModel
                     {
                         IsAuthenticated = true,
@@ -70,13 +89,14 @@ namespace WebApp1.Controllers
                         {
                             Id = user.Id,
                             UserName = user.UserName,
-                            Email = user.Email
+                            Email = user.Email,
+                            IsAdministrator = isAdmin
                         }
                     });
                 }
                 else
                 {
-                    return StatusCode(StatusCodes.Status500InternalServerError);
+                    await signInManager.SignOutAsync();
                 }
             }
             return Ok(new UserViewModel

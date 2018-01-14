@@ -1,5 +1,4 @@
 ﻿.outlet-container {
-    overflow: hidden;
-    /*border: 2px solid red;*/
+    border: 2px solid blue;
     transition: height 600ms cubic-bezier(.07,.82,.39,.99);
 }

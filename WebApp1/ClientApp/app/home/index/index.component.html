@@ -1,0 +1,6 @@
+<div style="height:500px;border:1px solid black;position:relative;">
+    <div #div1 [@return]="returnState" id="div1" style="height:100%;width:100%;position:absolute;background-color:lightgray;z-index:1;"
+         (panstart)="onPanStart($event)" (panmove)="onPan($event)" (panend)="onPanEnd()"
+         [style.transition]="animated"></div>
+    <div style="height:100%;width:100%;position:absolute;background-color:blue;top:0px;z-index:0;"></div>
+</div>

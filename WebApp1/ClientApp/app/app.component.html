@@ -1,19 +1,20 @@
 ﻿<ng-progress [color]="'white'" [thick]="true"></ng-progress>
 <app-header></app-header>
 
-<div class="container py-5 mt-4">
-    <main>
-        <div>
-            <a routerLink="/" class="btn btn-sm btn-primary">home</a>
-            <a routerLink="/account" class="btn btn-sm btn-primary">account</a>
-            <a routerLink="/account/login" class="btn btn-sm btn-primary">account/login</a>
-            <a routerLink="/account/signup" class="btn btn-sm btn-primary">account/signup</a>
-        </div>
-        <div>{{getState(outlet)}}</div>
-        <div #outletContainer [@rootRouting]="getState(outlet)" class="outlet-container" [style.height]="outletContainerHeight">
-            <router-outlet #outlet="outlet"></router-outlet>
-        </div>
-    </main>
+<div style="overflow:hidden;">
+    <div class="container py-5 mt-4">
+        <main>
+            <div>
+                <a routerLink="/" class="btn btn-sm btn-primary">home</a>
+                <a routerLink="/account" class="btn btn-sm btn-primary">account</a>
+                <a routerLink="/account/login" class="btn btn-sm btn-primary">account/login</a>
+                <a routerLink="/account/signup" class="btn btn-sm btn-primary">account/signup</a>
+            </div>
+            <div>{{getState(outlet)}}</div>
+            <div #outletContainer [@rootRouting]="getState(outlet)" class="outlet-container" [style.height]="outletContainerHeight">
+                <router-outlet #outlet="outlet"></router-outlet>
+            </div>
+        </main>
+    </div>
 </div>
-
 <app-footer></app-footer>

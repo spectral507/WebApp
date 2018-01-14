@@ -1,22 +1,46 @@
 ﻿<div class="row">
     <div class="col-sm-10 col-md-8 col-lg-6 col-xl-4 m-auto">
-        <form>
+        <form novalidate [formGroup]="form" (ngSubmit)="onSubmit()">
             <p class="h5 text-center mb-4">Вход</p>
 
             <div class="md-form">
                 <i class="fa fa-envelope prefix grey-text"></i>
-                <input type="text" id="defaultForm-email" class="form-control" mdbActive>
-                <label for="defaultForm-email">Email</label>
+                <input formControlName="userNameOrEmail" type="text" id="defaultForm-email" class="form-control"
+                       [class.counter-danger]="(formSubmitted && userNameOrEmailControl.invalid) || form.errors"
+                       [class.counter-success]="formSubmitted && userNameOrEmailControl.valid && !form.errors" mdbActive>
+                <label for="defaultForm-email">*Имя пользователя или email</label>
+                <div *ngIf="formSubmitted" style="margin-left:3rem;">
+                    <small [@fadeSlideLeft]="" *ngFor="let msg of getUserNameOrEmailMessages()" class="text-danger d-block">
+                        {{msg}}
+                    </small>
+                </div>
             </div>
 
             <div class="md-form">
                 <i class="fa fa-lock prefix grey-text"></i>
-                <input type="password" id="defaultForm-pass" class="form-control" mdbActive>
-                <label for="defaultForm-pass">Пароль</label>
+                <input formControlName="password" type="password" id="defaultForm-pass" class="form-control"
+                       [class.counter-danger]="(formSubmitted && passwordControl.invalid) || form.errors"
+                       [class.counter-success]="formSubmitted && passwordControl.valid && !form.errors" mdbActive>
+                <label for="defaultForm-pass">*Пароль</label>
+                <div *ngIf="formSubmitted" style="margin-left:3rem;">
+                    <small [@fadeSlideLeft]="" *ngFor="let msg of getPasswordMessages()" class="text-danger d-block">
+                        {{msg}}
+                    </small>
+                </div>
             </div>
 
+            <div *ngIf="formSubmitted" style="margin-left:3rem;">
+                <small [@fadeSlideLeft]="" *ngFor="let msg of getFormMessages()" class="text-danger d-block">
+                    {{msg}}
+                </small>
+            </div>
+
+            <small *ngIf="authenticated" [@fadeSlideLeft]="" class="text-success d-block"
+                   style="margin-left:3rem;">Вы успешно вошли!</small>
+
             <div class="text-center">
-                <button class="btn btn-default waves-light" mdbRippleRadius>Войти</button>
+                <button type="submit" class="btn btn-primary waves-light" [disabled]="formSubmitted && form.invalid" mdbRippleRadius>Войти</button>
+                <button type="button" class="btn btn-outline-primary waves-light" mdbRippleRadius>Отмена</button>
             </div>
         </form>
     </div>

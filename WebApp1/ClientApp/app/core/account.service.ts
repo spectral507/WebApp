@@ -1,7 +1,12 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/catch';
+
+import { AppError } from '../shared/errors/app.error';
+import { BadRequestError } from '../shared/errors/bad-request.error';
+import { UnauthorizedError } from '../shared/errors/unauthorized.error';
 import { User } from '../shared/models/user.model';
 
 @Injectable()
@@ -17,19 +22,19 @@ export class AccountService {
         this._stateUrl = '/api/account/state';
     }
 
-    login(userNameOrEmail: string, password: string): Observable<User | {}> {
+    login(userNameOrEmail: string, password: string): Observable<User> {
 
         return this._httpClient
             .post<User>(this._loginUrl, { userNameOrEmail: userNameOrEmail, password: password })
             .catch((errorResponse: HttpErrorResponse) => {
                 if (errorResponse.status == 400) {
-                    throw errorResponse.error;
+                    return Observable.throw(new BadRequestError(errorResponse.error));
                 }
                 else if (errorResponse.status == 401) {
-                    throw { '': ['Invalid login or/and password.'] };
+                    return Observable.throw(new UnauthorizedError());
                 }
                 else {
-                    throw { '': ['Unknown error.'] };
+                    return Observable.throw(new AppError('Произошла неизвестная ошибка'));
                 }
             });
     }
@@ -38,12 +43,11 @@ export class AccountService {
         this._httpClient.post<void>(this._logoutUrl, null).subscribe(() => { });
     }
 
-    getAuthenticationState(): Observable<User | {}> {
-
+    getAuthenticationState(): Observable<User> {
         return this._httpClient
             .post<User>(this._stateUrl, null)
             .catch((errorResponse: HttpErrorResponse) => {
-                throw { '': ['Unknown error.'] };
+                return Observable.throw(new AppError('Произошла неизвестная ошибка'));
             });
     }
 }

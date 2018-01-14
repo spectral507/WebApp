@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from "@angular/router";
 import { UsersComponent } from './users/users.component';
-import { UsersResolver } from './shared/users.resolver';
+//import { UsersResolver } from './shared/users.resolver';
 import { AuthenticationGuard } from '../guards/authentication.guard';
 
 let routing = RouterModule.forChild([
@@ -10,8 +10,7 @@ let routing = RouterModule.forChild([
     {
         path: 'users',
         component: UsersComponent,
-        canActivate: [AuthenticationGuard],
-        resolve: { users: UsersResolver }
+        canActivate: [AuthenticationGuard]
     }
 ]);
 
@@ -21,6 +20,6 @@ let routing = RouterModule.forChild([
         routing
     ],
     declarations: [UsersComponent],
-    providers: [UsersResolver]
+    providers: []
 })
 export class AdminModule { }

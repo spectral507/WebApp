@@ -4,11 +4,19 @@ import { RouterModule, Routes } from '@angular/router';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
 import { AccountComponent } from './account/account.component';
 import { HomeComponent } from './home/home.component';
+import { IndexComponent } from './home/index/index.component';
 import { LoginComponent } from './account/login/login.component';
 import { SignupComponent } from './account/signup/signup.component';
 
 const routes: Routes = [
-    { path: '', component: HomeComponent, data: { state: 'home' } },
+    {
+        path: '',
+        component: HomeComponent,
+        children: [
+            { path: '', component: IndexComponent, data: { state: 'index' } }
+        ],
+        data: { state: 'home' }
+    },
     {
         path: 'account',
         component: AccountComponent,

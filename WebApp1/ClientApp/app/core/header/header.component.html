@@ -1,23 +1,12 @@
 ﻿<header>
-    <mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark stylish-color" [containerInside]="true">
+    <mdb-navbar SideClass="navbar navbar-expand-md navbar-dark stylish-color" [containerInside]="true">
         <logo>
-            <a class="logo navbar-brand white-text"><strong>Navbar</strong></a>
+            <a routerLink="/" class="logo navbar-brand white-text"><strong>Todo</strong></a>
         </logo>
         <links>
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active waves-light">
-                    <a class="nav-link">Link1</a>
-                </li>
-                <li class="nav-item waves-light" mdbRippleRadius>
-                    <a class="nav-link">Link2</a>
-                </li>
-                <li class="nav-item waves-light" mdbRippleRadius>
-                    <a class="nav-link">Link3</a>
-                </li>
-            </ul>
             <ul class="navbar-nav ml-auto">
                 <li *ngIf="!authenticated; else accountMenu" class="nav-item waves-light" mdbRippleRadius>
-                    <a [routerLink]="['/account', 'login']" [queryParams]="{ return: getCurrentUrl() }" class="nav-link"><i class="fa fa-sign-in"></i> <span>Вход</span></a>
+                    <a [routerLink]="['/login']" [queryParams]="{ return: getCurrentUrl() }" class="nav-link"><i class="fa fa-sign-in"></i> <span>Вход</span></a>
                 </li>
             </ul>
         </links>
@@ -25,17 +14,13 @@
 </header>
 
 <ng-template #accountMenu>
-    <li class="nav-item dropdown" dropdown>
-        <a dropdownToggle class="nav-link dropdown-toggle waves-light" mdbRippleRadius>
-            <i class="fa fa-user"></i> {{userDetails.userName}}<span class="caret"></span>
-        </a>
-        <div *dropdownMenu class="dropdown-menu dropdown dropdown-stylish-color" role="menu">
-            <a class="dropdown-item"><span mdbRippleRadius class="waves-light">Аккаунт</span></a>
-            <a *ngIf="userDetails.isAdministrator" class="dropdown-item"><span class="waves-light" mdbRippleRadius>Администрирование</span></a>
-            <div class="divider dropdown-divider"></div>
-            <a class="dropdown-item">
-                <span class="waves-light" (click)="logout()" mdbRippleRadius><i class="fa fa-sign-out"></i> Выйти</span>
-            </a>
-        </div>
+    <li class="nav-item waves-light" mdbRippleRadius>
+        <a routerLink="/account-info" (click)="close()" class="nav-link"><i class="fa fa-user"></i> {{userDetails.userName}}</a>
+    </li>
+    <li *ngIf="userDetails.isAdministrator" class="nav-item waves-light" mdbRippleRadius>
+        <a class="nav-link" (click)="close()" [routerLink]="['/admin']"><i class="fa fa-gear"></i> Администрирование</a>
+    </li>
+    <li class="nav-item waves-light" mdbRippleRadius>
+        <a class="nav-link" (click)="close()" [routerLink]="['/logout']"><i class="fa fa-sign-out"></i> Выход</a>
     </li>
 </ng-template>

@@ -1,20 +1,36 @@
-﻿<table class="table table-sm table-striped table-folding">
-    <thead>
-        <tr>
-            <th>User Id</th>
-            <th>UserName</th>
-            <th>Email</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let user of users">
-            <td data-label="User Id">{{user.id}}</td>
-            <td data-label="UserName">{{user.userName}}</td>
-            <td data-label="Email">{{user.email}}</td>
-            <td data-label="Actions">
-                <button type="button" class="btn btn-sm btn-danger waves-light" (click)="deleteUser(user.id)">Delete</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+﻿<app-pagination [page]="currentPage" [totalPages]="totalPages" [disabled]="paginationDisabled"
+                [link]="['/admin', 'users']"></app-pagination>
+<div class="items-outer-container" [style.height]="outerContainerHeight">
+    <table *items="paginatedUsers" class="table table-sm table-striped table-folding-unfold-md"
+           [@pagination]="paginationState" (@pagination.start)="onPaginationStart($event)"
+           (@pagination.done)="onPaginationDone($event)">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Имя</th>
+                <th>Email</th>
+                <th class="text-md-center">Админ</th>
+                <th class="text-md-center">Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *simpleFor="let user of paginatedUsers">
+                <td data-label="Id">{{user.id}}</td>
+                <td data-label="Имя">{{user.userName}}</td>
+                <td data-label="Email">{{user.email}}</td>
+                <td data-label="Админ" class="text-md-center">
+                    <i class="fa fa-check" *ngIf="user.isAdministrator"></i>
+                    <i class="fa fa-close" *ngIf="!user.isAdministrator"></i>
+                </td>
+                <td data-label="Действия" class="text-md-center">
+                    <button type="button" class="btn btn-danger btn-sm waves-light"
+                            (click)="deleteUser(user.id)" [disabled]="user.isAdministrator" mdbRippleRadius>
+                        Удалить
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<app-pagination [page]="currentPage" [totalPages]="totalPages" [disabled]="paginationDisabled"
+                [link]="['/admin', 'users']"></app-pagination>

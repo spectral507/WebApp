@@ -1,8 +1,10 @@
 @import "table-folding.css";
+@import "table-folding-unfold-md.css";
 
 $link-color: #0275d8;
 $link-color-hover: #0056b3;
 
+/*anchor fix*/
 a:not([href]):not([tabindex]) {
     color: $link-color;
 }
@@ -18,15 +20,17 @@ a:not([href]):not([tabindex]):focus {
 a:not([href]):not([tabindex]):hover {
     color: $link-color-hover;
 }
+/*end: anchor fix*/
 
+/*footer fix*/
 html {
     min-height: 100%;
     position: relative;
 }
 
 body {
-    padding-top: 1px;
-    margin-bottom: 280px;
+    padding-top: -1px;
+    margin-bottom: 80px;
 }
 
 footer {
@@ -34,43 +38,9 @@ footer {
     bottom: 0;
     width: 100%;
 }
+/*end: footer fix*/
 
-.outlet-container {
+.items-outer-container {
     position: relative;
+    transition: height 600ms cubic-bezier(.07,.82,.39,.98);
 }
-
-.animated-container {
-    display: block;
-    position: absolute;
-    width: 100%;
-}
-
-/*dropdown fix*/
-.dropdown .dropdown-menu a.dropdown-item {
-    display: block;
-    width: auto;
-    margin: 12px;
-    padding: 0px;
-}
-
-.dropdown .dropdown-menu a.dropdown-item:hover {
-    background-color: white;
-}
-
-.dropdown .dropdown-menu a.dropdown-item span {
-    display: block;
-    padding: 5px;
-    padding-left: 9px;
-    border-radius: 2px;
-    transition: background-color 100ms, color 100ms;
-}
-
-.dropdown .dropdown-menu a.dropdown-item:hover span {
-    color: white;
-    box-shadow: 0 5px 11px 0 rgba(0,0,0,.18), 0 4px 15px 0 rgba(0,0,0,.15);
-}
-
-.dropdown .dropdown-menu.dropdown-stylish-color a.dropdown-item:hover span {
-    background-color: #4b515d;
-}
-/*dropdown fix end*/

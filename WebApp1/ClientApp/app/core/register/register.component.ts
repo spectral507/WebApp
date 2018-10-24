@@ -193,15 +193,19 @@ export class RegisterComponent implements OnDestroy {
     }
 
     private validatePassword(control: FormControl): { [key: string]: any } {
+        let errors: { [key: string]: any } = null;
         if (!/\W/.test(control.value)) {
-            return { 'noalphanumeric': true }
+            if (!errors) errors = {};
+            errors['alphanumeric'] = true;
         }
         if (!/[0-9]/.test(control.value)) {
-            return { 'nodigit': true };
+            if (!errors) errors = {};
+            errors['digit'] = true;
         }
         if (!/[A-Z]/.test(control.value)) {
-            return { 'nouppercase': true };
+            if (!errors) errors = {};
+            errors['uppercase'] = true;
         }
-        return null;
+        return errors;
     }
 }

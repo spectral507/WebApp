@@ -23,7 +23,6 @@ export class AccountService {
     }
 
     login(userNameOrEmail: string, password: string): Observable<User> {
-
         return this._httpClient
             .post<User>(this._loginUrl, { userNameOrEmail: userNameOrEmail, password: password })
             .catch((errorResponse: HttpErrorResponse) => {

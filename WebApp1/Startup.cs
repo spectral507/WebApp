@@ -63,7 +63,12 @@ namespace WebApp1
                 };
             });
 
-            services.AddMvc();
+            services.AddMvc()
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.NullValueHandling
+                        = Newtonsoft.Json.NullValueHandling.Ignore;
+                });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -94,6 +99,8 @@ namespace WebApp1
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 AppIdentityDbContext.CreateAdminAccountAsync(scope.ServiceProvider).Wait();
+                SeedData.SeedAdminTodos(scope.ServiceProvider).Wait();
+                SeedData.SeedUsers(scope.ServiceProvider).Wait();
             }
         }
     }

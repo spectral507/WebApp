@@ -1,30 +1,28 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { AuthenticationService } from '../core/authentication.service';
-import { LoginService } from '../core/login.service';
-import { AppErrorHandlerService } from '../core/app-error-handler.service';
-import { ErrorHandler } from '@angular/core';
+import 'rxjs/add/operator/do';
 
 @Injectable()
 export class AuthenticationGuard implements CanActivate {
 
     constructor(private _authService: AuthenticationService,
-        private _loginService: LoginService,
-        private _errorHandler: ErrorHandler) {
-        console.log(this._errorHandler);
-    }
+        private _router: Router) { }
 
     canActivate(
         next: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
-        //TODO: remove
-        console.log('=> AUTHENTICATION GUARD');
-        console.log(state);
-
-        if (this._authService.user.isAuthenticated) return true;
-        this._loginService.login(state.url);
-        return false;
+        let authState: boolean | Observable<boolean> = this._authService.getAuthState();
+        if (authState instanceof Observable) {
+            return authState.do((isAuthenticated) => {
+                if (!isAuthenticated)
+                    this._router.navigate(['/login'], { queryParams: { return: state.url } });
+            });
+        }
+        else {
+            return authState;
+        }
     }
 }

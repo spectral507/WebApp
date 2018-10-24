@@ -10,5 +10,11 @@
     "inputFiles": [
       "ClientApp/app/account/account.component.html"
     ]
+  },
+  {
+    "outputFileName": "ClientApp/app/components/todo-list/todo-list.component.min.html",
+    "inputFiles": [
+      "ClientApp/app/components/todo-list/todo-list.component.html"
+    ]
   }
 ]

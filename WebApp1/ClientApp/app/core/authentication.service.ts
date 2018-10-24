@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/map';
 
 import { AccountService } from './account.service';
-
 import { User } from '../shared/models/user.model';
+import { TodoRepositoryService } from './todo-repository.service';
 
 @Injectable()
 export class AuthenticationService {
@@ -15,11 +16,12 @@ export class AuthenticationService {
     }
 
     private _user: User;
+    private _userAuthStateLoaded: boolean = false;
 
     constructor(private _accountService: AccountService,
+        private _todoRepo: TodoRepositoryService,
         private _router: Router) {
         this._user = { isAuthenticated: false, details: null };
-        this.updateState();
     }
 
     login(userNameOrEmail: string, password: string): Observable<User> {
@@ -34,19 +36,30 @@ export class AuthenticationService {
     logout(): void {
         this.reset();
         this._accountService.logout();
+        this._todoRepo.clearTodos();
         this._router.navigateByUrl('/');
     }
 
-    updateState(): void {
-        this.reset();
-        this._accountService
+    getAuthState(): boolean | Observable<boolean> {
+        if (this._userAuthStateLoaded) {
+            return this._user.isAuthenticated;
+        }
+        return this._accountService
             .getAuthenticationState()
-            .subscribe((user: User) => {
+            .map((user: User) => {
                 this._user = user;
+                this._userAuthStateLoaded = true;
+                if (user.isAuthenticated) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
             });
     }
 
     reset(): void {
+        this._userAuthStateLoaded = false;
         this._user.isAuthenticated = false;
         this._user.details = null;
     }

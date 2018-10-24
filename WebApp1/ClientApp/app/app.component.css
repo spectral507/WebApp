@@ -1,4 +1,4 @@
-﻿.outlet-container {
-    border: 2px solid blue;
-    transition: height 600ms cubic-bezier(.07,.82,.39,.99);
+﻿div.outlet-cont {
+    height: auto;
+    transition: height 600ms cubic-bezier(.07,.82,.39,.98);
 }

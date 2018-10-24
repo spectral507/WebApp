@@ -14,6 +14,18 @@ namespace WebApp1.Models.Identity
         public AppIdentityDbContext(DbContextOptions<AppIdentityDbContext> options)
             : base(options) { }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<AppUser>()
+                .HasMany(user => user.Todos)
+                .WithOne(todo => todo.AppUser)
+                .HasPrincipalKey(user => user.Id)
+                .HasForeignKey(todo => todo.AppUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
+
         public static async Task CreateAdminAccountAsync(IServiceProvider serviceProvider)
         {
             UserManager<AppUser> userManager =

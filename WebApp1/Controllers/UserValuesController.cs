@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -17,29 +16,40 @@ namespace WebApp1.Controllers
     {
         private UserManager<AppUser> userManager;
         private SignInManager<AppUser> signInManager;
+        private AppIdentityDbContext context;
 
         public UserValuesController(UserManager<AppUser> userMgr,
-            SignInManager<AppUser> signInMgr)
+            SignInManager<AppUser> signInMgr, AppIdentityDbContext ctx)
         {
             userManager = userMgr;
             signInManager = signInMgr;
+            context = ctx;
         }
 
         [HttpGet]
-        public IActionResult GetUsers()
+        public async Task<IActionResult> GetUsers()
         {
-            var users = userManager.Users.Select(user => new UserDetailsViewModel
+            var userTasks = userManager.Users.AsEnumerable().Select(async user => new UserDetailsViewModel
             {
                 Id = user.Id,
                 UserName = user.UserName,
-                Email = user.Email
+                Email = user.Email,
+                IsAdministrator = await userManager.IsInRoleAsync(user, "Administrator")
             });
+            var users = await Task.WhenAll(userTasks);
             return Ok(users);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
-        public IActionResult GetUser(string id)
+        public async Task<IActionResult> GetUser(string id)
         {
+            string userName = HttpContext.User.Identity.Name;
+            if (userName == null) return Unauthorized();
+
+            var currentUser = await userManager.FindByNameAsync(userName);
+            if (currentUser.Id != id) return Forbid();
+
             var user = userManager.Users.FirstOrDefault(
                 u => string.Compare(u.Id, id, StringComparison.Ordinal) == 0);
 
@@ -49,7 +59,8 @@ namespace WebApp1.Controllers
                 {
                     Id = user.Id,
                     UserName = user.UserName,
-                    Email = user.Email
+                    Email = user.Email,
+                    IsAdministrator = await userManager.IsInRoleAsync(user, "Administrator")
                 });
             }
             return NotFound();
@@ -63,22 +74,44 @@ namespace WebApp1.Controllers
             {
                 AppUser user = new AppUser
                 {
-                    UserName = model.UserName ?? model.Email,
+                    UserName = string.IsNullOrEmpty(model.UserName) ? model.Email : model.UserName,
                     Email = model.Email
                 };
                 IdentityResult result = await userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
-                    return StatusCode(StatusCodes.Status204NoContent);
+                    return Ok(new { user.Id });
                 }
                 else
                 {
                     Dictionary<string, List<string>> errors = new Dictionary<string, List<string>>();
-                    errors[""] = new List<string>();
+                    string[] userNameErrorsToProcess = new string[]
+                    {
+                        "DuplicateUserName",
+                        "InvalidUserName"
+                    };
+                    string[] passwordErrorsToProcess = new string[]
+                    {
+                        "PasswordTooShort",
+                        "PasswordRequiresNonAlphanumeric",
+                        "PasswordRequiresDigit",
+                        "PasswordRequiresUpper"
+                    };
                     foreach (IdentityError error in result.Errors)
                     {
-                        errors[""].Add(error.Description);
+                        if (userNameErrorsToProcess.Contains(error.Code))
+                        {
+                            if (!errors.ContainsKey(nameof(UserInputModel.UserName)))
+                                errors.Add(nameof(UserInputModel.UserName), new List<string>());
+                            errors[nameof(UserInputModel.UserName)].Add(error.Code);
+                        }
+                        if (passwordErrorsToProcess.Contains(error.Code))
+                        {
+                            if (!errors.ContainsKey(nameof(UserInputModel.Password)))
+                                errors.Add(nameof(UserInputModel.Password), new List<string>());
+                            errors[nameof(UserInputModel.Password)].Add(error.Code);
+                        }
                     }
                     HttpContext.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
                     return Json(errors);
@@ -93,22 +126,15 @@ namespace WebApp1.Controllers
             AppUser user = await userManager.FindByIdAsync(id);
             if (user != null)
             {
+                context.Entry<AppUser>(user).Collection(u => u.Todos).Load();
+                context.RemoveRange(user.Todos);
+                await context.SaveChangesAsync();
+
                 IdentityResult result = await userManager.DeleteAsync(user);
 
-                if (result.Succeeded)
+                if (!result.Succeeded)
                 {
-                    return StatusCode(StatusCodes.Status204NoContent);
-                }
-                else
-                {
-                    Dictionary<string, List<string>> errors = new Dictionary<string, List<string>>();
-                    errors[""] = new List<string>();
-                    foreach (IdentityError error in result.Errors)
-                    {
-                        errors[""].Add(error.Description);
-                    }
-                    HttpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                    return Json(errors);
+                    return StatusCode(StatusCodes.Status500InternalServerError);
                 }
             }
             return StatusCode(StatusCodes.Status204NoContent);

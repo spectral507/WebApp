@@ -1,4 +1,4 @@
-﻿import { animate, group, query, state, style, transition, trigger } from '@angular/animations';
+﻿import { animate, animateChild, group, query, state, style, transition, trigger } from '@angular/animations';
 
 export const rootRoutingTrigger = trigger('rootRouting', [
     transition('home => account', [
